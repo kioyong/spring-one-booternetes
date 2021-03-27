@@ -1,8 +1,33 @@
 server:
   port: 8081
+  shutdown: graceful
 spring:
   application:
     name: customer-reactive
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
   data:
     mongodb:
       uri: mongodb://localhost:27017/tour
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        #for local use
+        enabled: true
+  metrics:
+    export:
+      wavefront:
+        api-token: a79aca3e-fc83-4042-bffe-d78cb7f2f9b1
+        uri: https://wavefront.surf
+
+#https://wavefront.surf/dashboards/integration-spring-boot#_v01(g:(an:OFF,d:300,ls:!t,s:1616850992,w:'5m'),p:(application:(d:Label,f:TAG_KEY,k:application,l:Application,m:(Label:unnamed_application),q:'ts(%22process.uptime%22%20and%20source=%22$%7Bsource%7D%22)',tbr:''),filter:(h:t,v:'%20and%20source=%22$%7Bsource%7D%22%20and%20application=%22$%7Bapplication%7D%22%20and%20service=%22$%7Bservice%7D%22'),service:(d:Label,f:TAG_KEY,k:service,l:Service,m:(Label:customer-reactive),q:'ts(%22process.uptime%22%20AND%20source=%22$%7Bsource%7D%22%20AND%20application=%22$%7Bapplication%7D%22)',tbr:''),source:(d:Label,f:SOURCE,k:'',l:Source,m:(Label:desktop-3frm5r4),q:'ts(%22process.uptime%22)',tbr:'')))
+
+info:
+  foo: bar
