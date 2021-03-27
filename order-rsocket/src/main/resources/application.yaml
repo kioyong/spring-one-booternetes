@@ -1,0 +1,7 @@
+
+spring:
+  application:
+    name: order-rsocket
+  rsocket:
+    server:
+      port: 8181
