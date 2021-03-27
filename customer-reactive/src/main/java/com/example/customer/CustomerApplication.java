@@ -20,7 +20,7 @@ public class CustomerApplication {
         return applicationReadyEvent -> {
             customerRepository.deleteAll().subscribe();
             var saved = Flux.just("A", "B", "C", "D")
-                    .map(name -> new Customer(null, name))
+                    .map(name -> new Customer(name, name))
                     .flatMap(customerRepository::save);
             saved.subscribe(System.out::println);
         };

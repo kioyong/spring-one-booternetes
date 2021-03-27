@@ -3,6 +3,7 @@ package com.example.order;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,15 +30,14 @@ public class OrderRSocketApplication {
 class OrderRSocketController {
 
 
-    private HashMap<Integer, Collection<Order>> db = new HashMap<>();
+    private HashMap<String, Collection<Order>> db = new HashMap<>();
 
     {
-        for (int customerId = 0; customerId < 3; customerId++) {
-            db.put(customerId, randomOrdersFor(customerId));
-        }
+        List.of("A", "B", "C", "D").forEach(customerId -> db.put(customerId, randomOrdersFor(customerId)));
+
     }
 
-    private Collection<Order> randomOrdersFor(int customerId) {
+    private Collection<Order> randomOrdersFor(String customerId) {
         ArrayList<Order> customers = new ArrayList<>();
         int max = (int) (Math.random() * 1000);
         for (int i = 0; i < max; i++) {
@@ -47,7 +47,7 @@ class OrderRSocketController {
     }
 
     @MessageMapping("orders.{customerId}")
-    public Flux<Order> getOrdersFor(@DestinationVariable Integer customerId) {
+    public Flux<Order> getOrdersFor(@DestinationVariable String customerId) {
         return Flux.fromIterable(this.db.get(customerId));
     }
 
@@ -58,5 +58,5 @@ class OrderRSocketController {
 @NoArgsConstructor
 class Order {
     private Integer id;
-    private Integer customerId;
+    private String customerId;
 }
