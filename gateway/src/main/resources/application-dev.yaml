@@ -1,0 +1,6 @@
+customer-reactive:
+  uri: http://customer-reactive:8081
+
+order-socket:
+  host: order-socket
+  port: 8181

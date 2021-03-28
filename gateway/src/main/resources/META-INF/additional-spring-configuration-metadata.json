@@ -1,8 +1,0 @@
-{
-  "properties": [
-    {
-      "name": "customer-reactive.uri",
-      "type": "java.lang.String",
-      "description": "Description for customer-reactive.uri."
-  }
-] }

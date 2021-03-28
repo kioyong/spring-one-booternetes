@@ -20,3 +20,8 @@ customer-reactive:
 order-socket:
   host: localhost
   port: 8181
+
+
+logging:
+  level:
+    web: debug
