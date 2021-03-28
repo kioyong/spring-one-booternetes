@@ -1,0 +1,6 @@
+customer-reactive:
+  uri: http://42.194.227.155:8081
+
+order-socket:
+  host: 81.71.86.62
+  port: 8181

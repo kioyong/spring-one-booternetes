@@ -12,7 +12,11 @@ management:
       exposure:
         include: '*'
 
-
+  metrics:
+    export:
+      wavefront:
+        api-token: a79aca3e-fc83-4042-bffe-d78cb7f2f9b1
+        uri: https://wavefront.surf
 
 customer-reactive:
   uri: http://localhost:8081

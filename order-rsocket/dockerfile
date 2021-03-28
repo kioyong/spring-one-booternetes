@@ -1,5 +1,3 @@
 FROM openjdk:11.0-jre-buster
-RUN mvn clean package
 ADD target/*.jar app.jar
-EXPOSE 8082
 ENTRYPOINT ["java","-jar","/app.jar"]
