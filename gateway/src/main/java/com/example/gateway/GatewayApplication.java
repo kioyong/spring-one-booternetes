@@ -11,6 +11,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.gateway.route.RouteLocator;
@@ -29,10 +30,19 @@ public class GatewayApplication {
         SpringApplication.run(GatewayApplication.class, args);
     }
 
+    @Value("${customer-reactive.uri:http://localhost:8081}")
+    private String customerReactiveUri;
+
+    @Value("${order-socket.host:localhost}")
+    private String orderSocketHost;
+
+    @Value("${order-socket.port:8181}")
+    private Integer orderSocketPort;
+
 
     @Bean
     RSocketRequester rSocketRequester(RSocketRequester.Builder builder) {
-        return builder.tcp("localhost", 8181);
+        return builder.tcp(orderSocketHost, orderSocketPort);
     }
 
     @Bean
@@ -46,7 +56,7 @@ public class GatewayApplication {
                 .route(rs ->
                         rs.path("/proxy").and().host("*.spring.io")
                                 .filters(fs -> fs.setPath("/customers"))
-                                .uri("http://localhost:8081/")
+                                .uri(customerReactiveUri)
                 ).build();
     }
 }
@@ -55,11 +65,13 @@ public class GatewayApplication {
 @RequiredArgsConstructor
 class CrmClient {
 
+    @Value("${customer-reactive.uri:http://localhost:8081}")
+    private String customerReactiveUri;
     private final RSocketRequester rSocketRequester;
     private final WebClient http;
 
     Flux<Customer> getCustoemers() {
-        return this.http.get().uri("http://localhost:8081/customers").retrieve().bodyToFlux(Customer.class)
+        return this.http.get().uri(customerReactiveUri+"/customers").retrieve().bodyToFlux(Customer.class)
                 .retryWhen(Retry.backoff(10, Duration.ofSeconds(10)))
                 .onErrorResume(ex -> Flux.empty())
                 .timeout(Duration.ofSeconds(5));

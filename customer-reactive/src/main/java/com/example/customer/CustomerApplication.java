@@ -15,15 +15,15 @@ public class CustomerApplication {
         SpringApplication.run(CustomerApplication.class, args);
     }
 
-    @Bean
-    ApplicationListener<ApplicationReadyEvent> ready(CustomerRepository customerRepository) {
-        return applicationReadyEvent -> {
-            customerRepository.deleteAll().subscribe();
-            var saved = Flux.just("A", "B", "C", "D")
-                    .map(name -> new Customer(name, name))
-                    .flatMap(customerRepository::save);
-            saved.subscribe(System.out::println);
-        };
-    }
+//    @Bean
+//    ApplicationListener<ApplicationReadyEvent> ready(CustomerRepository customerRepository) {
+//        return applicationReadyEvent -> {
+//            customerRepository.deleteAll().subscribe();
+//            var saved = Flux.just("A", "B", "C", "D")
+//                    .map(name -> new Customer(name, name))
+//                    .flatMap(customerRepository::save);
+//            saved.subscribe(System.out::println);
+//        };
+//    }
 
 }
