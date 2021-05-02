@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Flux;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -18,4 +20,9 @@ public class CustomerController {
                 .map(name -> new Customer(name, name));
     }
 
+
+    @PostMapping("/customer")
+    public Customer test(@RequestBody Customer customer){
+        return customer;
+    }
 }
